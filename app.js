@@ -59,8 +59,8 @@ var UIController = (function() {
 
     var DOMstrings = {
         inputType: '.add__type',
-        description: '.add__description',
-        value: '.add__value',
+        inputDescription: '.add__description',
+        inputValue: '.add__value',
         inputBtn: '.add__btn',
         incomeContainer: '.income__list',
         expensesContainer: '.expenses__list'
@@ -70,8 +70,8 @@ var UIController = (function() {
         getInput: function() {
             return {
                 type: document.querySelector(DOMstrings.inputType).value,
-                description: document.querySelector(DOMstrings.description).value,
-                value: document.querySelector(DOMstrings.value).value
+                inputDescription: document.querySelector(DOMstrings.inputDescription).value,
+                inputValue: document.querySelector(DOMstrings.inputValue).value
             }
         },
 
@@ -101,6 +101,21 @@ var UIController = (function() {
             // 3. Insert the HTML into the DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 
+        },
+
+        clearFields: function() {
+            var fields;
+            var fieldsArr;
+
+            fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+
+            fieldsArr = Array.prototype.slice.call(fields);
+
+            fieldsArr.forEach(function(current, index, array) {
+                current.value = "";
+            });
+
+            fieldsArr[0].focus();
         },
 
         getDOMstrings: function() {
@@ -137,10 +152,13 @@ var controller = (function(budgetCTrl, UICtrl) {
         var input = UICtrl.getInput();
 
         // 2. Add the item to the budget controller
-        var newItem = budgetCTrl.addItem(input.type, input.description, input.value);
+        var newItem = budgetCTrl.addItem(input.type, input.inputDescription, input.inputValue);
 
         // 3. Add the item to the UI
         UIController.addListItem(newItem, input.type);
+
+        // 4 .Clear the fields
+        UIController.clearFields();
 
         // 4. Calculate the budget
 
