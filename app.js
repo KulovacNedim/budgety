@@ -55,6 +55,18 @@ var budgetController = (function() {
       return newItem;
     },
 
+    deleteItem: function(type, id) {
+      var ids = data.allItems[type].map(function(current) {
+        return current.id;
+      });
+
+      index = ids.indexOf(id);
+
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+      }
+    },
+
     calculateBudget: function() {
       // calculate total income and expenses
       calculateTotal("exp");
@@ -98,7 +110,8 @@ var UIController = (function() {
     budgetLabel: '.budget__value',
     incomeLabel: '.budget__income--value',
     expensesLabel: '.budget__expenses--value',
-    pecentageLabel: '.budget__expenses--percentage'
+    pecentageLabel: '.budget__expenses--percentage',
+    container: '.container'
   };
 
   return {
@@ -136,6 +149,11 @@ var UIController = (function() {
 
       // 3. Insert the HTML into the DOM
       document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
+    },
+
+    deleteListitem: function(selectorID) {
+      var element = document.getElementById(selectorID);
+      element.parentNode.removeChild(element);
     },
 
     clearFields: function() {
@@ -186,6 +204,8 @@ var controller = (function(budgetCTrl, UICtrl) {
         ctrlAddItem();
       }
     });
+
+    document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
   };
 
   var updateBudget = function() {
@@ -221,6 +241,29 @@ var controller = (function(budgetCTrl, UICtrl) {
       updateBudget();
     }
   };
+
+  var ctrlDeleteItem = function(event) {
+    var itemID, type, ID;
+
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    
+    if(itemID) {
+      splitID = itemID.split('-');
+      type = splitID[0];
+      ID = parseInt(splitID[1]);
+
+      // 1. delete item from the data structure
+      budgetCTrl.deleteItem(type, ID);
+
+      // 2. delete item from the UI
+      UICtrl.deleteListitem(itemID);
+
+      // 3. Update and shoe the new budget
+      updateBudget();
+
+    }
+  };
+
   return {
     init: function() {
       setupEventListeners();
