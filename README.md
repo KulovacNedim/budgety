@@ -2,15 +2,16 @@
 
 # budgety 
 
+[The Complete JavaScript Course 2019: Build Real Projects! | Udemy](https://www.udemy.com/the-complete-javascript-course/)
+
 
 ```bash
- budgety - simple app coded while watching <a href="https://www.udemy.com/the-complete-javascript-course/" target="_blank">the course on javascript</a>
+ budgety - simple app coded while watching course on Javascript
 ```
 
 ```bash
  coded with ES5 just for demonstration purpose
 ```
-
 
 ---
 
